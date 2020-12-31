@@ -16,13 +16,15 @@ The Heston model has five independent parameters. The underlying asset price fol
 where
 
 ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20dW_1) is the risk-free interest rate, we have ignored dividends &
+
 ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20dW_2) and  are two (correlated) standard Brownian motions.
+
 The five Heston model parameters are:
-the initial variance $$V0$$
-the long-term variance ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20V_%7B%5Cinfty%7D)
-the speed of mean reversion ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Ckappa)
-the volatility of volatility ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Comega)
-and the correlation ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Crho). 
+- the initial variance ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20V0)
+- the long-term variance ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20V_%7B%5Cinfty%7D)
+- the speed of mean reversion ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Ckappa)
+- the volatility of volatility ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Comega)
+- and the correlation ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Crho). 
 
 We will also require that ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%202%5Ckappa%20%5Ctheta%20%3E%20%5Csigma%5E2) (Feller condition).
 
