@@ -9,22 +9,22 @@ The implied volatility of such a European option is then the value of the volati
 
 The Heston model has five independent parameters. The underlying asset price follows a standard lognormal process, and the variance V follows a mean-reverting square root process:
 
-$$dS = rSdt + \sqrt{V}SdW_1$$
+![equation](https://latex.codecogs.com/gif.latex?dS%20%3D%20rSdt%20&plus;%20%5Csqrt%7BV%7DSdW_1)
 
-$$dV = -\kappa(V0 - V_{\infty})dt + \omega\sqrt{V}dW_2$$
+![equation](https://latex.codecogs.com/gif.latex?dV%20%3D%20-%5Ckappa%28V0%20-%20V_%7B%5Cinfty%7D%29dt%20&plus;%20%5Comega%5Csqrt%7BV%7DdW_2)
 
 where
 
-$$dW_1$$ is the risk-free interest rate, we have ignored dividends &
-$$dW_2$$ and  are two (correlated) standard Brownian motions.
+![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20dW_1) is the risk-free interest rate, we have ignored dividends &
+![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20dW_2) and  are two (correlated) standard Brownian motions.
 The five Heston model parameters are:
 the initial variance $$V0$$
-the long-term variance $$V_{\infty}$$
-the speed of mean reversion $$\kappa$$
-the volatility of volatility $$\omega$$
-and the correlation $$\rho$$. 
+the long-term variance ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20V_%7B%5Cinfty%7D)
+the speed of mean reversion ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Ckappa)
+the volatility of volatility ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Comega)
+and the correlation ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Crho). 
 
-We will also require that $$2\kappa \theta > \sigma^2$$ (Feller condition).
+We will also require that ![equation](https://latex.codecogs.com/gif.latex?%5Cinline%202%5Ckappa%20%5Ctheta%20%3E%20%5Csigma%5E2) (Feller condition).
 
 The Heston differential equations can be solved by a Monte carlo simulation, or by a Fourier series expansion. 
 
