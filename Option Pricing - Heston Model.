@@ -1,0 +1,73 @@
+import numpy as np
+import scipy.stats as ss
+import matplotlib.pyplot as plt
+
+np.random.seed(seed=13) 
+
+N = 100000             # time steps 
+paths = 10000               # number of paths
+T = 1
+T_vec, dt = np.linspace(0,T,N, retstep=True )
+dt_sq = np.sqrt(dt)
+
+
+r = 0.05                                           # drift
+rho = -0.8                                         # correlation coefficient
+kappa = 3                                          # mean reversion coefficient
+theta = 0.1                                        # long-term mean of the variance
+sigma = 0.25                                       # (Vol of Vol) - Volatility of instantaneous variance
+mu = 0.1
+T = 1                                             # Terminal time
+K = 100                                            # Stike  
+v0 = 0.08                                          # spot variance
+S0 = 100                                           # spot stock price 
+X0 = np.log(S0)                                    # log price
+Y0 = np.log(v0)                                    # log volatility
+k = np.log(K/S0)                                   # Vol of Vol - Volatility of instantaneous variance
+std_asy = np.sqrt( theta * sigma**2 /(2*kappa) )   # asymptotic standard deviation for the CIR process
+assert(2*kappa * theta > sigma**2)                 # Feller condition
+
+# Generate random Brownian Motion
+MU = np.array([0, 0])
+COV = np.matrix([[1, rho], [rho, 1]])
+W = ss.multivariate_normal.rvs( mean=MU, cov=COV, size=(paths,N-1) )
+W_S = W[:,:,0]   # Stock Brownian motion:     W_1
+W_v = W[:,:,1]   # Variance Brownian motion:  W_2
+
+# Initialize vectors
+Y = np.zeros((paths,N))
+Y[:,0] = Y0
+X = np.zeros((paths,N))
+X[:,0] = X0
+v = np.zeros(N)
+
+# Generate paths
+for t in range(0,N-1):
+    v = np.exp(Y[:,t])    # variance 
+    v_sq = np.sqrt(v)     # square root of variance 
+    
+    Y[:,t+1] = Y[:,t] + (1/v)*( kappa*(theta - v) - 0.5*sigma**2 )*dt + sigma * (1/v_sq) * dt_sq * W_v[:,t]   
+    X[:,t+1] = X[:,t] + (mu - 0.5*v)*dt + v_sq * dt_sq * W_S[:,t]
+    
+fig = plt.figure(figsize=(16,5))
+ax1 = fig.add_subplot(121); ax2 = fig.add_subplot(122)
+
+ax1.plot(T_vec, np.exp(X.T) )
+ax1.set_title("Heston model, Stock process. 10000 paths"); ax1.set_xlabel("Time"); ax1.set_ylabel("Stock")
+ax2.plot(T_vec, np.exp(Y.T) )
+plt.show()
+
+ax2.set_title("Heston model, Variance process. 10000 paths"); ax2.set_xlabel("Time"); ax2.set_ylabel("Variance")
+ax2.plot(T_vec, (theta + std_asy)*np.ones_like(T_vec), label="1 asymptotic std dev", color="black" )
+ax2.plot(T_vec, (theta - std_asy)*np.ones_like(T_vec), color="black" )
+ax2.plot(T_vec, theta*np.ones_like(T_vec), label="Long term mean" )
+ax2.legend(loc="upper right"); 
+plt.show()
+
+
+
+DiscountedPayoff = np.exp(-r*T) * np.maximum(np.exp(X.T)-K,0) 
+V = np.mean( DiscountedPayoff )
+std_err = ss.sem( DiscountedPayoff ,axis=None, ddof=0)
+print("Heston Monte Carlo call price: ", V)
+print("With standard error: ", std_err)
